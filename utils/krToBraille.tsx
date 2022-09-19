@@ -1,10 +1,8 @@
-import numToBraille from "./numToBraille"
-
 type consonantType = {
-  [key: string]: number
+  [key: string]: string
 }
 
-const krToBraille = (valueKr: string) => {
+const krToBraille = (inputLetter: string) => {
   // 한글 분리: 초성, 중성, 종성
   const f = [
     'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ',
@@ -23,93 +21,116 @@ const krToBraille = (valueKr: string) => {
     'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'
   ]
   // 한글 유니코드 번호 구하고 index로 변환
-  const valueUniCode = valueKr.charCodeAt(0) - 44032
+  const valueUniCode = inputLetter.charCodeAt(0) - 44032
   const fIdx = Math.floor(valueUniCode / 588)
   const mIdx = Math.floor((valueUniCode - (fIdx * 588)) / 28)
   const lIdx = Math.floor(valueUniCode % 28)
-  console.log(valueUniCode, fIdx, mIdx, lIdx)
   // 한글로 변환
   const fKr = f[fIdx]
   const mKr = m[mIdx]
   const lKr = l[lIdx]
-
   // 분리된 한글 점자로 변환
   const fCode: consonantType = {
-    "ㄱ": 4,
-    "ㄲ": 4,
-    "ㄴ": 14,
-    "ㄷ": 24,
-    "ㄸ": 24,
-    "ㄹ": 5,
-    "ㅁ": 15,
-    "ㅂ": 45,
-    "ㅃ": 45,
-    "ㅅ": 6,
-    "ㅆ": 6,
-    "ㅇ": 0,
-    "ㅈ": 46,
-    "ㅉ": 46,
-    "ㅊ": 56,
-    "ㅋ": 124,
-    "ㅌ": 125,
-    "ㅍ": 145,
-    "ㅎ": 245
+    "ㄱ": "0b001000",
+    "ㄲ": "0b100000 0b001000",
+    "ㄴ": "0b001001",
+    "ㄷ": "0b001010",
+    "ㄸ": "0b100000 0b001010",
+    "ㄹ": "0b010000",
+    "ㅁ": "0b010001",
+    "ㅂ": "0b011000",
+    "ㅃ": "0b100000 0b011000",
+    "ㅅ": "0b100000",
+    "ㅆ": "0b100000 0b100000",
+    "ㅇ": "0b000000",
+    "ㅈ": "0b101000",
+    "ㅉ": "0b100000 0b101000",
+    "ㅊ": "0b110000",
+    "ㅋ": "0b001011",
+    "ㅌ": "0b010011",
+    "ㅍ": "0b011001",
+    "ㅎ": "0b011010"
   }
   const mCode: consonantType = {
-    "ㅏ": 126,
-    "ㅑ": 345,
-    "ㅓ": 234,
-    "ㅕ": 156,
-    "ㅗ": 136,
-    "ㅛ": 346,
-    "ㅜ": 134,
-    "ㅠ": 146,
-    "ㅡ": 246,
-    "ㅣ": 135,
-    "ㅐ": 1235,
-    "ㅔ": 1345,
-    "ㅚ": 13456,
-    "ㅘ": 1236,
-    "ㅝ": 1234,
-    "ㅢ": 2456,
-    "ㅖ": 34,
-    "ㅟ": 134,
-    "ㅒ": 345,
-    "ㅙ": 1236,
-    "ㅞ": 1234
+    "ㅏ": "0b100011",
+    "ㅑ": "0b011100",
+    "ㅓ": "0b001110",
+    "ㅕ": "0b110001",
+    "ㅗ": "0b100101",
+    "ㅛ": "0b101100",
+    "ㅜ": "0b001101",
+    "ㅠ": "0b101001",
+    "ㅡ": "0b101010",
+    "ㅣ": "0b010101",
+    "ㅐ": "0b010111",
+    "ㅔ": "0b011101",
+    "ㅚ": "0b111101",
+    "ㅘ": "0b100111",
+    "ㅝ": "0b001111",
+    "ㅢ": "0b111010",
+    "ㅖ": "0b001100",
+    "ㅟ": "0b001101 0b010111",
+    "ㅒ": "0b011100 0b010111",
+    "ㅙ": "0b100111 0b010111",
+    "ㅞ": "0b001111 0b010111"
   }
   const lCode: consonantType = {
-    "ㄱ": 1,
-    "ㄲ": 1,
-    "ㄴ": 25,
-    "ㄷ": 35,
-    "ㄸ": 35,
-    "ㄹ": 2,
-    "ㅁ": 26,
-    "ㅂ": 12,
-    "ㅃ": 12,
-    "ㅅ": 3,
-    "ㅆ": 34,
-    "ㅇ": 2356,
-    "ㅈ": 13,
-    "ㅉ": 13,
-    "ㅊ": 23,
-    "ㅋ": 235,
-    "ㅌ": 236,
-    "ㅍ": 256,
-    "ㅎ": 356
+    "ㄱ": "0b000001",
+    "ㄲ": "0b000001 0b000001",
+    "ㄳ": "0b000001 0b000100",
+    "ㄴ": "0b010010",
+    "ㄵ": "0b010010 0b000101",
+    "ㄶ": "0b010010 0b110100",
+    "ㄷ": "0b010100",
+    "ㄸ": "0b010100",
+    "ㄹ": "0b000010",
+    "ㄺ": "0b000010 0b000001",
+    "ㄻ": "0b000010 0b100010",
+    "ㄼ": "0b000010 0b000011",
+    "ㄽ": "0b000010 0b000100",
+    "ㄾ": "0b000010 0b100110",
+    "ㄿ": "0b000010 0b110010",
+    "ㅀ": "0b000010 0b110100",
+    "ㅁ": "0b100010",
+    "ㅂ": "0b000011",
+    "ㅄ": "0b000011 0b000100",
+    "ㅃ": "0b000011",
+    "ㅅ": "0b000100",
+    "ㅆ": "0b001100",
+    "ㅇ": "0b110110",
+    "ㅈ": "0b000101",
+    "ㅉ": "0b000101",
+    "ㅊ": "0b000110",
+    "ㅋ": "0b010110",
+    "ㅌ": "0b100110",
+    "ㅍ": "0b110010",
+    "ㅎ": "0b110100"
   }
 
-  let fBraille = fKr? numToBraille(fCode[fKr]): ''
-  let mBraille = mKr? numToBraille(mCode[mKr]): ''
-  let lBraille = lKr? numToBraille(lCode[lKr]): ''
-
-  const xcptCon = ["ㄲ", "ㄸ", "ㅃ", "ㅉ"]
-  const xcptVow = ["ㅟ", "ㅒ", "ㅙ", "ㅞ"]
-  xcptCon.includes(fKr)? fBraille += "⠠": fBraille
-  xcptVow.includes(mKr)? mBraille += "⠠": mBraille
-  xcptCon.includes(lKr)? lBraille += "⠠": lBraille
-
+  // 초성 변환
+  let fBraille = ''
+  if (fKr) {
+    let fCodeArr = fCode[fKr].split(' ')
+    fCodeArr.map(fItem => {
+      fBraille += String.fromCodePoint(Number(fItem) + 0x2800)
+    })
+  }
+  // 중성 변환
+  let mBraille = ''
+  if (mKr) {
+    let mCodeArr = mCode[mKr].split(' ')
+    mCodeArr.map(mItem => {
+      mBraille += String.fromCodePoint(Number(mItem) + 0x2800)
+    })
+  }
+  // 종성 변환
+  let lBraille = ''
+  if (lKr) {
+    let lCodeArr = lCode[lKr].split(' ')
+    lCodeArr.map(lItem => {
+      lBraille += String.fromCodePoint(Number(lItem) + 0x2800)
+    })
+  }
   let res = fBraille + mBraille + lBraille
   return res
 }
