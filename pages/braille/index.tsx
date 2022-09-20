@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import toBraille from '../../utils/toBraille';
+import toBraille from '../../utils/atoBraille';
 
 const Index = () => {
   const [inputText, setInputText] = useState("")

@@ -1,49 +1,61 @@
-// 접속사 축약어 -> 점자
-const constToBraille = (inputWord: string) => {
-  const constKeys = Object.keys(constractions)
-  for (let i = 0; i < constKeys.length; i++) {
-    if (inputWord.indexOf(constKeys[i]) === 0) {
-      inputWord.replace(constKeys[i], constractions[constKeys[i]])
+const getUnicode = (inputLetter: string) => {
+  return inputLetter.charCodeAt(0) - 44032
+}
+const getType = (inputLetter: string) => {
+  const uni = getUnicode(inputLetter)
+  if (uni >= getUnicode('가') && uni <= getUnicode('힣')) {
+    return 'kr'
+  }
+  return ''
+}
+const krToBraille = (inputWord: string) => {
+  for (let i = 0; i < inputWord.length; i++) {
+    let inputLetter = inputWord[i]
+    if (getType(inputLetter) === 'kr') {
+
     }
   }
-  return inputWord
-}
-// 한글 -> 초성, 중성, 종성 점자코드
-const krToCode = (inputLetter: string) => {
-  let valueUnicode = inputLetter.charCodeAt(0) - 44032
-  let fIdx = Math.floor(valueUnicode / 588)
-  let mIdx = Math.floor((valueUnicode - (Math.floor(valueUnicode / 588) * 588)) / 28)
-  let lIdx = Math.floor(valueUnicode % 28)
-  return {
-    type: 'kr',
-    f: f[fIdx],
-    m: m[mIdx],
-    l: l[lIdx]
-  }
-}
-// 예외 체크
-const checkXcpt = (krCode: {[key: string]: string}) =>{
-  // 단독 자모인 경우
-  if (krCode.f && !krCode.m && !krCode.l) {
-    return krCode.f = 0b111111 + krCode.f
-  } else if (!krCode.f && krCode.m && !krCode.l) {
-    return krCode.m = 0b111111 + krCode.m
-  } else if (!krCode.f && !krCode.m && krCode.l) {
-    return krCode.l = 0b111111 + krCode.l
-  }
-}
-// 점자코드 -> 점자
-const codeToBrailleKr = (inputLetterCode: string) =>{
-  let braille = ''
-  if (inputLetterCode) {
-    fCode[inputLetterCode].split(' ').map(fItem => {
-      braille += String.fromCodePoint(Number(fItem) + 0x2800)
-    })
-  }
-  return braille
+
+  // // 한글 유니코드 번호 구하고 index로 변환
+  // const valueUniCode = inputLetter.charCodeAt(0) - 44032
+  // const fIdx = Math.floor(valueUniCode / 588)
+  // const mIdx = Math.floor((valueUniCode - (fIdx * 588)) / 28)
+  // const lIdx = Math.floor(valueUniCode % 28)
+  // // 한글로 변환
+  // const fKr = f[fIdx]
+  // const mKr = m[mIdx]
+  // const lKr = l[lIdx]
+  // // 분리된 한글 점자로 변환
+
+  // // 초성 변환
+  // let fBraille = ''
+  // if (fKr) {
+  //   let fCodeArr = fCode[fKr].split(' ')
+  //   fCodeArr.map(fItem => {
+  //     fBraille += String.fromCodePoint(Number(fItem) + 0x2800)
+  //   })
+  // }
+  // // 중성 변환
+  // let mBraille = ''
+  // if (mKr) {
+  //   let mCodeArr = mCode[mKr].split(' ')
+  //   mCodeArr.map(mItem => {
+  //     mBraille += String.fromCodePoint(Number(mItem) + 0x2800)
+  //   })
+  // }
+  // // 종성 변환
+  // let lBraille = ''
+  // if (lKr) {
+  //   let lCodeArr = lCode[lKr].split(' ')
+  //   lCodeArr.map(lItem => {
+  //     lBraille += String.fromCodePoint(Number(lItem) + 0x2800)
+  //   })
+  // }
+  // let res = fBraille + mBraille + lBraille
+  // return res
 }
 
-export {constractions}
+export default krToBraille
 
 type mapType = {
   [key: string]: string
@@ -64,15 +76,6 @@ const l = [
   'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ',
   'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'
 ]
-const constractions: mapType = {
-  "그래서": "0b000001 0b001110",
-  "그러나": "0b000001 0b001001",
-  "그러면": "0b000001 0b010010",
-  "그러므로": "0b000001 0b100010",
-  "그런데": "0b000001 0b011101",
-  "그리고": "0b000001 0b100101",
-  "그리하여": "0b000001 0b110001",
-}
 const fCode: mapType = {
   "ㄱ": "0b001000",
   "ㄲ": "0b100000 0b001000",
