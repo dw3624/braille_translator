@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import toBraille from '../../utils/atoBraille';
+import toBraille from '../../utils/toBraille';
 
 const Index = () => {
   const [inputText, setInputText] = useState("")
-  const [outputBraille, setOutputBraille] = useState("")
+  const [outputBraille, setOutputBraille] = useState("" as any)
   const onChange = (event: any) => setInputText(event.target.value)
   useEffect(() => {
     return setOutputBraille(toBraille(inputText));
