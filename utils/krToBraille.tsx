@@ -12,7 +12,7 @@ const getType = (inputLetter: string) => {
   }
   return ''
 }
-const krToBraille = (inputWord: string): Array<Object> => {
+const krToBraille: Function = (inputWord: string): Array<Object> => {
   let resArr: Array<Object> = []
   for (let i = 0; i < inputWord.length; i++) {
     // console.log('inputLetter:', inputWord[i], letterType)

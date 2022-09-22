@@ -1,20 +1,19 @@
-interface Props {
-  inputArray: Objects[]
-}
-interface Objects {
+type inputArray = inputObject[];
+interface inputObject {
     type: string;
     f: string;
     m: string;
     l: string;
 }
 
-const krVowelChain = ({inputArray}: Props) => {
+const krVowelChain: Function = (inputArray: inputArray) => {
   for (let i = 1; i < inputArray.length; i++) {
     let inputLetter = inputArray[i]
     if (inputLetter.type === 'kr') {
       console.log(inputArray[i-1], inputArray[i])
     }
   }
+  return inputArray
   // const getVowel = (inputLetter: string) => {
   //   const valueUniCode = inputLetter.charCodeAt(0) - 44032
   //   const fIdx = Math.floor(valueUniCode / 588)

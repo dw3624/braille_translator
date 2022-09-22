@@ -13,7 +13,7 @@ const toBraille = (inputText: string) => {
     console.log(inputArray)
     // 모음연쇄 적용
     console.log(typeof inputArray)
-    inputArray = krVowelChain(inputArray)
+    krVowelChain(inputArray)
     // 점자 변환
     return ''
   })
