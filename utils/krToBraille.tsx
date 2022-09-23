@@ -1,3 +1,5 @@
+import krVowelChain, { inputArray, inputObject } from "./krVowelChain";
+
 const getUnicode = (inputLetter: string) => {
   return inputLetter.charCodeAt(0) - 44032
 }
@@ -12,11 +14,8 @@ const getType = (inputLetter: string) => {
   }
   return ''
 }
-const krToBraille: Function = (inputWord: string): Array<Object> => {
-  let resArr: Array<Object> = []
-  for (let i = 0; i < inputWord.length; i++) {
-    // console.log('inputLetter:', inputWord[i], letterType)
-    let inputLetter = inputWord[i]
+// 한글 초중종성 분리
+const krSplitLetter: Function = (inputLetter: string) => {
     let letterType = getType(inputLetter)
     let res = {
       type: letterType,
@@ -34,6 +33,7 @@ const krToBraille: Function = (inputWord: string): Array<Object> => {
       res.l = l[lIdx]
     } else if (letterType === 'krSingleF') {
       let Idx = inputLetter.charCodeAt(0) - 12593
+      console.log(Idx, f[Idx])
       res.f = f[Idx]
     } else if (letterType === 'krSingleF') {
       let Idx = inputLetter.charCodeAt(0) - 12623
@@ -41,8 +41,31 @@ const krToBraille: Function = (inputWord: string): Array<Object> => {
     } else {
       res.l = inputLetter
     }
+    return res
+}
+const krToCode: Function = (inputArray: inputArray) => {
+  inputArray.map((inputLetter) => {
+    if ( inputLetter.type !== 'braille' ) {
+      console.log(inputLetter, fCode[inputLetter.f])
+      inputLetter.f = fCode[inputLetter.f]? fCode[inputLetter.f]: ''
+      inputLetter.m = mCode[inputLetter.m]? mCode[inputLetter.m]: ''
+      inputLetter.l = lCode[inputLetter.l]? lCode[inputLetter.l]: ''
+    }
+  })
+  return inputArray
+}
+const krToBraille: Function = (inputWord: string): Array<Object> => {
+  let resArr: Array<Object> = []
+  // 한글 초중종성 분리 후 배열화
+  for (let i = 0; i < inputWord.length; i++) {
+    let res = krSplitLetter(inputWord[i])
     resArr.push(res)
   }
+  // 모음 연쇄
+  resArr = krVowelChain(resArr)
+  // 점자코드 변환
+  resArr = krToCode(resArr)
+  console.log(resArr)
   return resArr
 }
 

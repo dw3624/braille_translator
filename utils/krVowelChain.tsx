@@ -1,54 +1,42 @@
-type inputArray = inputObject[];
-interface inputObject {
+export type inputArray = inputObject[];
+export interface inputObject {
     type: string;
     f: string;
     m: string;
     l: string;
 }
 
+const cond1 = (bfr: inputObject, now: inputObject) => {
+  return (
+    ['ㅑ','ㅘ','ㅜ','ㅝ'].includes(bfr.m)&& bfr.l === ''
+      && now.f === ''&& now.m === 'ㅐ'
+  )
+}
+const cond2 = (bfr: inputObject, now: inputObject) => {
+  return (
+    bfr.f === ''&& bfr.l === ''
+      && now.f === ''&& now.m === 'ㅖ'
+  )
+}
+
 const krVowelChain: Function = (inputArray: inputArray) => {
+  let resArray: Array<inputObject> = inputArray[0]? [inputArray[0]]: []
   for (let i = 1; i < inputArray.length; i++) {
+    let resObject: inputObject = { type: 'braille', f: '', m: '', l: '' }
     let inputLetter = inputArray[i]
+    console.log(inputLetter)
     if (inputLetter.type === 'kr') {
-      console.log(inputArray[i-1], inputArray[i])
+      if ( cond1(inputArray[i-1], inputLetter) ) {
+        resObject.l = String.fromCodePoint(0b100100 + 0x2800)
+        resArray.push(resObject)
+      } else if ( cond2(inputArray[i-1], inputLetter) ) {
+        resObject.l = String.fromCodePoint(0b100100 + 0x2800)
+        resArray.push(resObject)
+      }
     }
+    resArray.push(inputLetter)
   }
-  return inputArray
-  // const getVowel = (inputLetter: string) => {
-  //   const valueUniCode = inputLetter.charCodeAt(0) - 44032
-  //   const fIdx = Math.floor(valueUniCode / 588)
-  //   const mIdx = Math.floor((valueUniCode - (fIdx * 588)) / 28)
-  //   return mIdx
-  // }
-  // const isVowelEnd = (inputLetter: string) => {
-  //   let uni = inputLetter.charCodeAt(0)
-  //   if (uni < 44032 || uni > 55203) return null
-  //   return (uni-44032) % 28 == 0
-  // }
-  // let res = ''
-  // res = inputWord[0] + res
-  // for (let i = 1; i < inputWord.length; i++) {
-  //   let vowel = getVowel(inputWord[i])
-  //   console.log(i, vowel)
-  //   switch (vowel) {
-  //     // ㅑㅘㅜㅝ + ⠤ + 애
-  //     case 1:
-  //       let vowelPrev = getVowel(inputWord[i-1])
-  //       if (isVowelEnd(inputWord[i-1]) && [2, 9, 13, 14].includes(vowelPrev)) {
-  //         res += String.fromCodePoint(0b100100 + 0x2800) + inputWord[i]
-  //       }
-  //       break
-  //     // 모음 + ⠤ + 예
-  //     case 7:
-  //       if (isVowelEnd(inputWord[i-1])) {
-  //         res += String.fromCodePoint(0b100100 + 0x2800) + inputWord[i]
-  //       }
-  //       break
-  //     default:
-  //       res += inputWord[i]
-  //   }
-  // }
-  // return res
+  return resArray
 };
 
 export default krVowelChain;

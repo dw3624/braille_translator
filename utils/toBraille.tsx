@@ -1,22 +1,20 @@
 import krToBraille from './krToBraille'
 import constToBraille from './constToBraille'
-import krVowelChain from './krVowelChain';
+import codeToBraille from './codeToBraille';
 
 const toBraille = (inputText: string) => {
+  let res = ''
   // 어절 구분
   inputText.split(' ').map((inputWord) =>{
+    let word = ''
     // 축약어 검사
     inputWord = constToBraille(inputWord)
-    // console.log(inputWord)
     // 점자코드 변환
     let inputArray = krToBraille(inputWord)
-    console.log(inputArray)
-    // 모음연쇄 적용
-    console.log(typeof inputArray)
-    krVowelChain(inputArray)
     // 점자 변환
-    return ''
+    res += codeToBraille(inputArray)
   })
+  return res
 }
 
 export default toBraille
