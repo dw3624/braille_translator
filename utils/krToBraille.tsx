@@ -17,6 +17,7 @@ const getType = (inputLetter: string) => {
 // 한글 초중종성 분리
 const krSplitLetter: Function = (inputLetter: string) => {
     let letterType = getType(inputLetter)
+    console.log(inputLetter, letterType)
     let res = {
       type: letterType,
       f: '',
@@ -33,7 +34,6 @@ const krSplitLetter: Function = (inputLetter: string) => {
       res.l = l[lIdx]
     } else if (letterType === 'krSingleF') {
       let Idx = inputLetter.charCodeAt(0) - 12593
-      console.log(Idx, f[Idx])
       res.f = f[Idx]
     } else if (letterType === 'krSingleF') {
       let Idx = inputLetter.charCodeAt(0) - 12623
@@ -46,7 +46,6 @@ const krSplitLetter: Function = (inputLetter: string) => {
 const krToCode: Function = (inputArray: inputArray) => {
   inputArray.map((inputLetter) => {
     if ( inputLetter.type !== 'braille' ) {
-      console.log(inputLetter, fCode[inputLetter.f])
       inputLetter.f = fCode[inputLetter.f]? fCode[inputLetter.f]: ''
       inputLetter.m = mCode[inputLetter.m]? mCode[inputLetter.m]: ''
       inputLetter.l = lCode[inputLetter.l]? lCode[inputLetter.l]: ''

@@ -8,14 +8,13 @@ export interface inputObject {
 
 const cond1 = (bfr: inputObject, now: inputObject) => {
   return (
-    ['ㅑ','ㅘ','ㅜ','ㅝ'].includes(bfr.m)&& bfr.l === ''
-      && now.f === ''&& now.m === 'ㅐ'
+    now.f === ''&& now.m === 'ㅐ'
+      && ['ㅑ','ㅘ','ㅜ','ㅝ'].includes(bfr.m)&& bfr.l === ''
   )
 }
 const cond2 = (bfr: inputObject, now: inputObject) => {
   return (
-    bfr.f === ''&& bfr.l === ''
-      && now.f === ''&& now.m === 'ㅖ'
+    now.m === 'ㅖ' && bfr.l === ''
   )
 }
 

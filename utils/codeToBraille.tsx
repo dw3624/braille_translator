@@ -13,14 +13,16 @@ const codeToBraille: Function = (inputArray: inputArray) => {
     let resLetter = ''
     if (inputLetter.type !== 'braille') {
       inputLetter.f.split(' ').map(item => {
-        resLetter += String.fromCodePoint(Number(item) + 0x2800)
+        resLetter += item? String.fromCodePoint(Number(item) + 0x2800): ''
       })
       inputLetter.m.split(' ').map(item => {
-        resLetter += String.fromCodePoint(Number(item) + 0x2800)
+        resLetter += item? String.fromCodePoint(Number(item) + 0x2800): ''
       })
       inputLetter.l.split(' ').map(item => {
-        resLetter += String.fromCodePoint(Number(item) + 0x2800)
+        resLetter += item? String.fromCodePoint(Number(item) + 0x2800): ''
       })
+    } else {
+      resLetter = inputLetter.l
     }
     resWord += resLetter
   })

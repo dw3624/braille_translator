@@ -6,9 +6,9 @@ const toBraille = (inputText: string) => {
   let res = ''
   // 어절 구분
   inputText.split(' ').map((inputWord) =>{
-    let word = ''
     // 축약어 검사
     inputWord = constToBraille(inputWord)
+    console.log(inputWord)
     // 점자코드 변환
     let inputArray = krToBraille(inputWord)
     // 점자 변환
