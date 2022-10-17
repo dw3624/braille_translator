@@ -1,20 +1,8 @@
-import krToBraille from './krToBraille'
-import constToBraille from './constToBraille'
-import codeToBraille from './codeToBraille';
+import textToBraille from "./textToBraille"
 
 const toBraille = (inputText: string) => {
-  let res = ''
-  // 어절 구분
-  inputText.split(' ').map((inputWord) =>{
-    // 축약어 검사
-    inputWord = constToBraille(inputWord)
-    console.log(inputWord)
-    // 점자코드 변환
-    let inputArray = krToBraille(inputWord)
-    // 점자 변환
-    res += codeToBraille(inputArray)
-  })
-  return res
+  let a = textToBraille(inputText)
+  return a
 }
 
 export default toBraille

@@ -1,6 +1,26 @@
 export type mapType = {
   [key: string]: string
 }
+export type mapCntrType = {
+  a: {
+    [key: string]: string
+  },
+  eo: {
+    [key: string]: string
+  }
+  yeo: {
+    [key: string]: string
+  }
+  o: {
+    [key: string]: string
+  }
+  u: {
+    [key: string]: string
+  }
+  eu: {
+    [key: string]: string
+  }
+}
 
 export const mapContrToCode: mapType = {
   "그래서": "0b000001 0b001110",
@@ -104,4 +124,44 @@ export const mapLastToCode: mapType = {
   "ㅌ": "0b100110",
   "ㅍ": "0b110010",
   "ㅎ": "0b110100"
+}
+
+export const mapCharContraction: mapCntrType = {
+  "a": {
+    "ㄱ": "0b101011",
+    "ㄴ": "0b001001",
+    "ㄷ": "0b001010",
+    "ㅁ": "0b010001",
+    "ㅂ": "0b011000",
+    "ㅅ": "0b000111",
+    "ㅈ": "0b101000",
+    "ㅋ": "0b001011",
+    "ㅌ": "0b010011",
+    "ㅍ": "0b011001",
+    "ㅎ": "0b011010"
+  },
+  "eo": {
+    "ㄱ": "0b111001",
+    "ㄴ": "0b111110",
+    "ㄹ": "0b011110"
+  },
+  "yeo": {
+    "ㄴ": "0b100001",
+    "ㄹ": "0b110011",
+    "ㅇ": "0b111011"
+  },
+  "o": {
+    "ㄱ": "0b101101",
+    "ㄴ": "0b110111",
+    "ㅇ": "0b111111"
+
+  },
+  "u": {
+    "ㄴ": "0b011011",
+    "ㄹ": "0b101111"
+  },
+  "eu": {
+    "ㄴ": "0b110101",
+    "ㄹ": "0b101110"
+  }
 }

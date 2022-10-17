@@ -1,4 +1,4 @@
-import { mapContrToCode } from "./mapToBraille";
+import { mapContrToCode, first, middle, last, mapFirstToCode, mapMiddleToCode, mapLastToCode, mapCharContraction } from "./mapToBraille";
 
 const textToBraille = (inputText: string) => {
   let outputArr: Array<string> = []
@@ -23,6 +23,7 @@ const wordToBraille: Function = (inputWord: string) => {
       outputWord += word[i]
     }
   }
+  console.log(outputWord)
   return outputWord
 }
 
@@ -33,24 +34,31 @@ const wordContraction: Function = (inputWord: string) => {
       return inputWord.replace(constKeys[i], mapContrToCode[constKeys[i]])
     }
   }
+  return inputWord
 }
 
 const charToBrailleKr: Function = (inputChar: string) => {
+  let charCode = ''
   if (inputChar === 'ㅇ') { return '' }
   if (getUni('ㄱ') <= getUni(inputChar) && getUni(inputChar) <= getUni('ㅎ')) {
-    return
+    charCode = "0b111111 " + mapFirstToCode[inputChar]
+  } else if (getUni('ㅏ') <= getUni(inputChar) && getUni(inputChar) <= getUni('ㅣ')) {
+    charCode = "0b111111 " + mapMiddleToCode[inputChar]
+  } else {
+    let charSplit = splitKr(inputChar)
+    charCode = toCode(charSplit)
   }
-  if (getUni('ㅏ') <= getUni(inputChar) && getUni(inputChar) <= getUni('ㅣ')) {
-    return
-  }
+  let codeBraille = codeToBraille(charCode)
+  return codeBraille
+}
 
-  let charSplit = splitKr(inputChar)
-  let charCode = toCode(charSplit)
-  let outputCharArr: Array<string> = []
+const codeToBraille: Function = (charCode: string) => {
+  console.log(charCode)
+  let charBraille = ''
   charCode.split(' ').map((code: string) => {
-    outputCharArr.push(code)
+    charBraille += code? String.fromCodePoint(Number(code) + 0x2800): ''
   })
-  return outputCharArr.join(' ')
+  return charBraille
 }
 
 const getUni: Function = (inputChar: string) => {
@@ -70,15 +78,52 @@ const getType: Function = (inputChar: string) => {
 }
 
 const splitKr: Function = (inputChar: string) => {
-  return
+  let uni = getUni(inputChar)
+  let idxF = Math.floor(uni / 588)
+  let idxM = Math.floor((uni - (idxF * 588)) / 28)
+  let idxL = Math.floor(uni % 28)
+  return [first[idxF],  middle[idxM], last[idxL]]
 }
 
-const toCode: Function = (inputChar: string) => {
-  return
+const toCode: Function = (inputChar: Array<string>) => {
+  console.log(inputChar)
+  let first = inputChar[0]
+  let middle = inputChar[1]
+  let last = inputChar[2]
+  let charCodeF = mapFirstToCode[first]? mapFirstToCode[first]: ''
+  let charCodeM = mapMiddleToCode[middle]? mapMiddleToCode[middle]: ''
+  let charCodeL = mapLastToCode[last]? mapLastToCode[last]: ''
+  let resChar = ''
+
+  if (middle === 'ㅏ' && mapCharContraction['a'][first]) {
+    resChar = mapCharContraction.a[first] + ' ' + charCodeL
+
+  } else if (middle === 'ㅓ' && mapCharContraction.eo[last]) {
+    resChar = charCodeF + ' ' + mapCharContraction.eo[last]
+
+  } else if (middle === 'ㅕ' && mapCharContraction.yeo[last]) {
+    resChar = charCodeF + ' ' + mapCharContraction.yeo[last]
+
+  } else if (middle === 'ㅗ' && mapCharContraction.o[last]) {
+    resChar = charCodeF + ' ' + mapCharContraction.o[last]
+
+  } else if (middle === 'ㅜ' && mapCharContraction.u[last]) {
+    resChar = charCodeF + ' ' + mapCharContraction.u[last]
+
+  } else if (middle === 'ㅡ' && mapCharContraction.eu[last]) {
+    resChar = charCodeF + ' ' + mapCharContraction.eu[last]
+
+  } else if (middle === 'ㅣ' && last === 'ㄴ') {
+    resChar = first + " 0b011111"
+
+  } else if (first === 'ㄱ' && middle === 'ㅓ' && last === 'ㅅ') {
+    resChar = "0b111000 0b001110"
+
+  } else {
+    resChar = [charCodeF, charCodeM, charCodeL].join(' ')
+  }
+  console.log(resChar)
+  return resChar
 }
-
-
-
-
 
 export default textToBraille;
